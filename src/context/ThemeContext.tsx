@@ -1,0 +1,32 @@
+import React, { createContext, useContext, useState } from 'react';
+import { Theme } from '../types/schema';
+
+// Default fallback theme
+const defaultTheme: Theme = {
+  primary: '#000000',
+  background: '#FFFFFF',
+  text: '#333333',
+  surface: '#F5F5F5',
+};
+
+interface ThemeContextProps {
+  theme: Theme;
+  setTheme: (theme: Theme) => void;
+}
+
+const ThemeContext = createContext<ThemeContextProps>({
+  theme: defaultTheme,
+  setTheme: () => {},
+});
+
+export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [theme, setTheme] = useState<Theme>(defaultTheme);
+
+  return (
+    <ThemeContext.Provider value={{ theme, setTheme }}>
+      {children}
+    </ThemeContext.Provider>
+  );
+};
+
+export const useTheme = () => useContext(ThemeContext);
